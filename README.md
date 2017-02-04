@@ -1,4 +1,4 @@
-# Yet Another Programmer’s Note
+# Yet Another Programmer’s Notes
 
 [Yet Another](https://en.wikipedia.org/wiki/Yet_another)，记得第一次接触这个单词还是编译技术课程的时候，YACC - Yet Another Compiler Compiler。又一个编译器，又一个轮子，又一篇笔记。
 
