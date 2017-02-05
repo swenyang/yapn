@@ -25,18 +25,13 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 #### WebP vs PNG24 vs PNG8
 
 为了验证官方数据，我找了一些资源做测试，数据生成方式：
+
 1. 原始图片文件：UI提供，大部分是PhotoShop导出，所以其中不包含照片；
-
 2. WebP Lossless：通过`cwebp -q 100 "$file" -o "$file.webp" -lossless`生成
-
 3. PNG24：ImageOptim批量压缩生成
-
 4. WebP Lossless vs PNG24：`(PNG24大小 - WebPLossless大小) / 原始大小`
-
 5. WebP Loss：通过`cwebp -q 100 "$file" -o "$file.webp"`生成[^3]
-
 4. PNG8：`pngquant --force --ext .png *.png` -\> ImageOptim批量压缩生成
-
 5. WebP vs PNG8：`(PNG8大小 - WebPLoss大小) / 原始大小`
 
 所得数据如下：
@@ -56,7 +51,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
         <th>WebP vs PNG8</th>
     </tr>
     </thead>
-    <tbody style="background-color: #f8f8f8">
+    <tbody>
     <tr>
         <td>image1.png</td>
         <td>634,022</td>
@@ -756,7 +751,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
         <th>JS引用</th>
     </tr>
     </thead>
-    <tbody style="background-color: #f8f8f8">
+    <tbody>
 	<tr>
 		<td>picture</td>
 		<td>拦截器</td>
@@ -807,7 +802,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 		<th>Android浏览器</th>
     </tr>
     </thead>
-    <tbody style="background-color: #f8f8f8">
+    <tbody>
 	<tr>
 		<td>picture</td>
 		<td>❗️⚠️部分浏览器</td>
@@ -849,13 +844,9 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 从表格可以看出，对于常规的HTML5项目来说：
 
 1. `<picture>`：排除，兼容性不太好，目前阶段还不适用；
-
 2. 客户端拦截：排除，因为在浏览器环境下运行可能不正常；
-
 2. 资源加载拦截：排除，不能处理HTML和CSS的图片引用，JS里也要单独写加载器；
-
 3. 多版本代码：相比之下较为理想，能够自动处理HTML, CSS, JS中的图片引用，运行兼容性也能保证，唯一的缺点是对于不支持WebP的浏览器得fallback回到PNG图片。
-
 4. libwebpjs：排除，缺点太多，库大、转码耗性能、不能处理HTML和CSS的图片引用。
 
 #### 多版本代码解决方案的实现
@@ -865,7 +856,6 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 主要思路如下：
 
 1. 用Node.js写build脚本，从Webpack配置编译出不用WebP和用WebP的两种版本代码。
-
 2. HTML引用Webpack生成的js脚本时，不直接用`<script src="xxx">`引入，先判断浏览器的WebP能力，再对应载入WebP版本的代码或者非WebP版本的代码：
 
 		
@@ -893,13 +883,9 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 本文给出了5个解决方案，每个方案有各自的优劣势，总结适用场景分别如下：
 
 1. `<picture>`：适用于不太考虑兼容低版本Android和iOS的项目（前文讨论分别有约50%和18%，比例不小），方案实现容易；
-
 2. 客户端拦截：适用于只运行在客户端环境内的项目（Hybrid App），方案实现容易；
-
 3. 资源加载拦截：适用于只从JS代码加载图片的项目，目前来看比较偏向于游戏场景，方案实现比较容易；
-
 4. 多版本代码：适用于大部分项目，兼容性好，但方案实现比较难；
-
 5. libwebjs：适用于不太考虑性能、且只从JS代码加载图片的项目（感觉除了demo外没有特别好的使用场景）。
 
 对于多版本代码方案，写了一个demo实现了自动构建，如果考虑使用WebP可以参考借鉴一下，项目地址是[https://github.com/swenyang/webp-multi-versioning](https://github.com/swenyang/webp-multi-versioning)，欢迎指正。
