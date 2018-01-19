@@ -6,6 +6,8 @@
 
 根据官方的数据，WebP格式有不小的优势——大概有26%的带宽节约。事实上WebP在2010年发布，至今已经接近7年。在2013年我从事手游研发时项目已经全线引入了WebP。如果项目对图片质量要求比较高、图片资源又比较大的话，还是值得引入的。但是HTML5项目[^2]由于本身的一些特殊性，使用WebP图片还是有不少的问题。
 
+另外一点，出于[**政治**](https://www.reddit.com/r/firefox/comments/46wxye/why_is_firefox_still_not_supporting_webp/)（简单来说就是 Google 喜欢推行自己的技术标准，但是 Mozilla 等不一定全盘接受）和[WebP图片本身缺陷](https://news.ycombinator.com/item?id=13021845)的原因，未来 FireFox/Edge/Safari 等浏览器对于 WebP 的支持也没有完全确定。
+
 ### 图片格式对比
 
 根据Google官方介绍的数据，WebP平均比PNG图片小26%。在讨论方案前，我挑选了以前项目中用到的60张PNG图片做了对比测试（由于大部分项目使用的图片都是带透明通道的PNG图片，JPEG相对较少，所以只对比了PNG图片）。
@@ -37,7 +39,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 所得数据如下：
 
 <table class="tableizer-table"
-       style="text-align: right; border-collapse: collapse; width: 100%">
+       style="text-align: right; border-collapse: collapse;">
     <thead>
     <tr class="tableizer-firstrow"
         style="color: #fff; background-color: #757575">
@@ -716,6 +718,8 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 	![](DraggedImage-5.png)
 
+	**TODO** 在不支持`<picture>`标签的浏览器上运行能否正常显示图片。
+
 	- 优点是通用性好，使用容易，不支持WebP格式的可以自动fallback到其他格式。
 	- 缺点是iOS和Android均有一部分比例的系统不支持此标签。
 
@@ -741,7 +745,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 以上几个方案对HTML[^4], CSS, JS几个入口WebP图片引用的支持情况如下：
 
-<table class="tableizer-table" style="text-align: center; border-collapse: collapse; width: 100%">
+<table class="tableizer-table" style="text-align: center; border-collapse: collapse;">
     <thead>
     <tr class="tableizer-firstrow" style="color: #fff; background-color: #757575">
         <th>方案</th>
@@ -792,7 +796,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 在iOS，Android客户端（Webview）和浏览器运行环境中兼容情况如下（✅使用WebP，❌不使用WebP，⚠️部分用WebP，❗️运行可能出错）：
 
-<table class="tableizer-table" style="border-collapse: collapse; width: 100%">
+<table class="tableizer-table" style="border-collapse: collapse;">
     <thead>
     <tr class="tableizer-firstrow" style="color: #fff; background-color: #757575">
         <th>方案</th>
@@ -858,21 +862,22 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 1. 用Node.js写build脚本，从Webpack配置编译出不用WebP和用WebP的两种版本代码。
 2. HTML引用Webpack生成的js脚本时，不直接用`<script src="xxx">`引入，先判断浏览器的WebP能力，再对应载入WebP版本的代码或者非WebP版本的代码：
 
-		
-		var isWebPSupported;
-		(function () {
-		    var WebP = new Image();
-		    WebP.onload = WebP.onerror = function () {
-		        isWebPSupported = WebP.height === 2;
-		        
-		        var name = isWebPSupported ? 'main.f041d9036d33197bd734.js' : 'main.9f0e87ed2db271e1a42b.js';
-		        var s = document.createElement('script');
-		        s.src = name;
-		        document.body.appendChild(s);
-		        
-		    };
-		    WebP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
-		})();
+	```js  
+	var isWebPSupported;  
+	(function () {  
+	    var WebP = new Image();  
+	    WebP.onload = WebP.onerror = function () {  
+	        isWebPSupported = WebP.height === 2;  
+	          
+	        var name = isWebPSupported ? 'main.f041d9036d33197bd734.js' : 'main.9f0e87ed2db271e1a42b.js';  
+	        var s = document.createElement('script');  
+	        s.src = name;  
+	        document.body.appendChild(s);  
+	          
+	    };  
+	    WebP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';  
+	})();  
+	```
 
 在线的demo请见[https://swenyang.github.io/webp-multi-versioning/](https://swenyang.github.io/webp-multi-versioning/)。
 
