@@ -2,7 +2,7 @@
 
 日期处理基本上是每一个工程师都会面临的问题，而在前端开发中由于对日期格式的不了解、或者浏览器的兼容性问题，容易踩到日期相关的坑。本文重点介绍一下 Javascript 中创建日期（即 `new Date`）的正确方式。
 
-## 创建日期
+## 创建日期对象的四种方式
 
 Javascript 的 `Date` 对象代表了某一个时间，时间的值是基于1970年1月1日（UTC时区）来计算的。根据 [MDN Date 文档](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) ,合法的构造函数格式如下：
 
@@ -193,7 +193,7 @@ ISO 8601 格式的日期字符串为 `YYYY-MM-DDTHH:mm:ss.sssZ`，各部分解�
 
 > 注意：当 `Date` 作为构造函数调用时且不止一个参数，参数值指定的是当地时区的值。如果想要 UTC 时区，可以使用 `new Date(Date.UTC(...))`，使用相同的参数。
 
-## 创建日期总结
+## 创建方式总结
 
 前面介绍了四种 `new Date` 的形式，优缺点如下：
 

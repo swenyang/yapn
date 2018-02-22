@@ -1,6 +1,6 @@
 # json-enhance: 扩展 `JSON.stringify` 和 `JSON.parse`
 
-## 前言
+## 引言
 
 从 1995 年 Javascript 诞生到现在，Web App 已经蓬勃发展了约20年。起初 Web App 都是多页应用的形式，直到后来 AJAX 技术的诞生，单页应用开始占据统治地位。单页应用促进了前后端分离，使 Web App 有了持续的状态管理，随着交互和应用复杂性增长，单页应用的规模可能也越来越大。
 

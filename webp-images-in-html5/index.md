@@ -1,6 +1,6 @@
-## 移动端HTML5项目使用WebP探讨
+# 移动端 HTML5 项目使用 WebP 图片探讨
 
-### 引言
+## 引言
 
 [**WebP**](https://developers.google.com/speed/webp/)是Google开发的一种图片文件格式，同时支持图片的无损压缩和有损压缩。WebP最初的目标是为了减少文件大小，从而加快网络上的页面访问速度。在相同的图片质量下，无损压缩图片比**PNG**格式小26%，有损压缩图片比**JPEG**小25~34%[^1]。
 
@@ -8,11 +8,11 @@
 
 另外一点，出于[**政治**](https://www.reddit.com/r/firefox/comments/46wxye/why_is_firefox_still_not_supporting_webp/)（简单来说就是 Google 喜欢推行自己的技术标准，但是 Mozilla 等不一定全盘接受）和[WebP图片本身缺陷](https://news.ycombinator.com/item?id=13021845)的原因，未来 FireFox/Edge/Safari 等浏览器对于 WebP 的支持也没有完全确定。
 
-### 图片格式对比
+## 图片格式对比
 
 根据Google官方介绍的数据，WebP平均比PNG图片小26%。在讨论方案前，我挑选了以前项目中用到的60张PNG图片做了对比测试（由于大部分项目使用的图片都是带透明通道的PNG图片，JPEG相对较少，所以只对比了PNG图片）。
 
-#### PNG图片压缩
+### PNG图片压缩
 
 PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般是用[ImageOptim](https://imageoptim.com/)去除图片中的冗余信息（大概可以压缩5%左右）；有损压缩一般是从PNG24格式压缩为PNG8格式，[pngquant](https://pngquant.org/)是一个比较流行的库，可以使用[image-webpack-loader](https://github.com/tcoopman/image-webpack-loader)每次打包时自动处理，也可以使用[ImageAlpha](https://pngmini.com/)一次批量处理好放入项目中。
 
@@ -24,7 +24,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 为了公平对比，使用WebP无损压缩对比PNG无损压缩，WebP有损压缩对比PNG8有损压缩。对于用户访问网络页面来说，Every Bit Counts，很多时候我们会牺牲一些色彩度来大幅度压缩文件（实际上，HTML5项目中很多图片都是处理成PNG8来大幅度提高页面的访问速度），所以PNG8的参考也是必要的——毕竟引入新技术要比生产环境有优势。
 
-#### WebP vs PNG24 vs PNG8
+### WebP vs PNG24 vs PNG8
 
 为了验证官方数据，我找了一些资源做测试，数据生成方式：
 
@@ -674,7 +674,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 这样看来，**使用WebP图片，无损压缩格式还是有一定优势；如果项目主要用损压缩PNG8，切换WebP可能没有太大的优势** 。
 
-### 浏览器兼容WebP图片现状
+## 浏览器兼容WebP图片现状
 
 ![](DraggedImage-1.png)
 
@@ -682,7 +682,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 即使是全球范围内也只有72.9%的兼容率，中国地区差不多是72.58%。所以如果要使用WebP图片需要考虑一大部分浏览器不兼容的现状。
 
-### 如何解决兼容性问题
+## 如何解决兼容性问题
 
 作为一名端工程师，很大一部分的工作内容都与兼容性相关。总结来说，根据资源从获取到展示的流程，解决兼容性有两个方向的思路：
 
@@ -700,7 +700,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 	所以对于浏览器来说，兼容性处理就麻烦的多。浏览器是各个厂商提供的，我们也不能强行让用户给浏览器装插件。另一方面，HTML5的发展趋势也是去插件化，从Flash，WebGL等技术的发展趋势也能够看出。插件这一条路也是不可取的。
 
-### HTML5解决方案
+## HTML5 WebP 解决方案
 
 根据前面的讨论，项目中引入WebP有一定的优势，那么要在HTML5项目使用WebP图片，解决方案有哪些呢？
 
@@ -853,7 +853,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 3. 多版本代码：相比之下较为理想，能够自动处理HTML, CSS, JS中的图片引用，运行兼容性也能保证，唯一的缺点是对于不支持WebP的浏览器得fallback回到PNG图片。
 4. libwebpjs：排除，缺点太多，库大、转码耗性能、不能处理HTML和CSS的图片引用。
 
-#### 多版本代码解决方案的实现
+### 多版本代码解决方案的实现
 
 我用Node.js + React + Webpack + CSS Modules等技术写了个demo项目，源代码见[https://github.com/swenyang/webp-multi-versioning](https://github.com/swenyang/webp-multi-versioning)。
 
@@ -881,7 +881,7 @@ PNG图片的压缩分为无损压缩和有损压缩两种，无损压缩一般�
 
 在线的demo请见[https://swenyang.github.io/webp-multi-versioning/](https://swenyang.github.io/webp-multi-versioning/)。
 
-### 总结
+## 总结
 
 虽然WebP诞生至今已经接近7个年头，但是浏览器支持一直局限于Google自家出的Chrome和Android浏览器、Opera浏览器，其他系列鲜有支持。这个背景下，加上HTML5的特殊性，WebP解决方案的优势并不非常明显，最好结合所在团队和业务的情况因地制宜。
 

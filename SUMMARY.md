@@ -12,5 +12,5 @@
     * [class 成员函数不同写法的区别](/class-member-functions/index.md)
 
 * Web
-    * [移动端项目使用 WebP 图片探讨](/webp-images-in-html5/index.md)
+    * [移动端 HTML5 项目使用 WebP 图片探讨](/webp-images-in-html5/index.md)
     * [【译】浏览器的坐标系统](/browser-coordinates/index.md)
